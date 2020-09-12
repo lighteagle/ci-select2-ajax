@@ -19,6 +19,7 @@
                 <div class="card">
                     <div class="card-body">
                         <a href="<?= base_url('select/add') ?>" class="btn btn-primary mb-2">Tambah Data</a>
+                        <a href="<?= base_url('select/autocomplete') ?>" class="btn btn-primary mb-2">Tambah Data - AutoComplete</a>
                         <?= $this->session->flashdata('status'); ?>
                         <table class="table table-hover">
                             <thead>
@@ -26,6 +27,7 @@
                                     <th scope="col">#</th>
                                     <th scope="col">Nama</th>
                                     <th scope="col">Alamat Lengkap</th>
+                                    <th scope="col">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -35,6 +37,10 @@
                                         <th scope="row"><?= $i ?></th>
                                         <td><?= $customer['customer'] ?></td>
                                         <td><?= $customer['alamat'] . ", Desa " . $customer['desa'] . ", Kecamatan " . $customer['kecamatan'] . ", Kabupaten " . $customer['kabupaten'] . ", Provinsi " . $customer['provinsi'] ?></td>
+                                        <td class="d-flex">
+                                            <a href="<?= base_url('select/getById/' . $customer['id'] . '/edit') ?>" class="btn btn-warning btn-sm">edit</a>
+                                            <a href="<?= base_url('select/getById/' . $customer['id'] . '/delete') ?>" class="btn btn-danger btn-sm ml-2" onclick="return confirm('Anda yakin akan dihapus?')">delete</a>
+                                        </td>
                                     </tr>
                                 <?php $i++;
                                 endforeach ?>

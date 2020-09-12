@@ -30,12 +30,30 @@ class Dynamic_model extends CI_Model
     public function getDataCustomer()
     {
 
-        $this->db->select('a.nama as customer, a.alamat, b.nama as provinsi, c.nama as kabupaten, d.nama as kecamatan, e.nama as desa');
+        $this->db->select('a.id, a.nama as customer, a.alamat, b.nama as provinsi, c.nama as kabupaten, d.nama as kecamatan, e.nama as desa');
         $this->db->from('m_customer as a');
         $this->db->join('wilayah_provinsi as b', 'a.provinsi_id=b.id');
         $this->db->join('wilayah_kabupaten as c', 'a.kabupaten_id=c.id');
         $this->db->join('wilayah_kecamatan as d', 'a.kecamatan_id=d.id');
         $this->db->join('wilayah_desa as e', 'a.desa_id=e.id');
         return $this->db->get()->result_array();
+    }
+
+    public function getByIdCustomer($id)
+    {
+
+        return $this->db->get_where('m_customer', ['id' => $id])->row_array();
+    }
+
+    public function update($where, $input)
+    {
+        $this->db->update('m_customer', $input, $where);
+        return $this->db->affected_rows();
+    }
+
+    public function delete($id)
+    {
+        $this->db->delete('m_customer', ['id' => $id]);
+        return $this->db->affected_rows();
     }
 }
