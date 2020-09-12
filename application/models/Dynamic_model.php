@@ -110,4 +110,15 @@ class Dynamic_model extends CI_Model
             return $this->db->count_all_results();
         }
     }
+
+    public function insertProdukKategori($data, $type)
+    {
+        if ($type == 'produk') {
+            $this->db->insert('m_produk', $data);
+            return $this->db->insert_id();
+        } elseif ($type == 'kategori') {
+            $this->db->insert_batch('tr_produk_to_kategori', $data);
+            return $this->db->affected_rows();
+        }
+    }
 }

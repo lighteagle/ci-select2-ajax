@@ -305,7 +305,20 @@ class Select extends CI_Controller
         } else {
             $produk = $this->input->post('produk');
             $inputproduk = ['nama_produk' => $produk];
-            $produk = $this->Dynamic_model->insertProdukKategori($inputproduk, 'produk');
+            $dataproduk = $this->Dynamic_model->insertProdukKategori($inputproduk, 'produk');
+            $kategori = $this->input->post('kategori[]');
+            $datainputkategori = array();
+            foreach ($kategori as $key) {
+                array_push($datainputkategori, array(
+                    'produk_id' => $dataproduk,
+                    'kategori_id' => $key
+                ));
+            }
+            if ($this->Dynamic_model->insertProdukKategori($datainputkategori, 'kategori') > 0) {
+                echo 'berhasil';
+            } else {
+                echo 'gagal';
+            }
         }
     }
 
