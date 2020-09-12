@@ -20,6 +20,8 @@
                     <div class="card-body">
                         <a href="<?= base_url('select/add') ?>" class="btn btn-primary mb-2">Tambah Data</a>
                         <a href="<?= base_url('select/autocomplete') ?>" class="btn btn-primary mb-2">Tambah Data - AutoComplete</a>
+                        <a href="<?= base_url('select/ajaxremote') ?>" class="btn btn-primary mb-2">Tambah Data - Select2 AJAX Remote</a>
+                        <a href="<?= base_url('select/multiple') ?>" class="btn btn-primary mb-2">Multiple Select</a>
                         <?= $this->session->flashdata('status'); ?>
                         <table class="table table-hover">
                             <thead>

@@ -56,4 +56,58 @@ class Dynamic_model extends CI_Model
         $this->db->delete('m_customer', ['id' => $id]);
         return $this->db->affected_rows();
     }
+
+    public function getDataAutoComplete($autocomplete)
+    {
+        $this->db->select('a.id as provinsi_id, a.nama as provinsi, b.id as kabupaten_id, b.nama as kabupaten, c.id as kecamatan_id, c.nama as kecamatan, d.id as desa_id, d.nama as desa');
+        $this->db->from('wilayah_provinsi as a');
+        $this->db->join('wilayah_kabupaten as b', 'a.id=b.provinsi_id');
+        $this->db->join('wilayah_kecamatan as c', 'b.id=c.kabupaten_id');
+        $this->db->join('wilayah_desa as d', 'c.id=d.kecamatan_id');
+        $this->db->like('d.nama', $autocomplete);
+        $this->db->limit(10);
+
+        return $this->db->get()->result_array();
+    }
+    public function getDataAjaxRemote($perPage, $page, $search, $type)
+    {
+        $this->db->select('a.id as provinsi_id, a.nama as provinsi, b.id as kabupaten_id, b.nama as kabupaten, c.id as kecamatan_id, c.nama as kecamatan, d.id as desa_id, d.nama as desa');
+        $this->db->from('wilayah_provinsi as a');
+        $this->db->join('wilayah_kabupaten as b', 'a.id=b.provinsi_id');
+        $this->db->join('wilayah_kecamatan as c', 'b.id=c.kabupaten_id');
+        $this->db->join('wilayah_desa as d', 'c.id=d.kecamatan_id');
+        $this->db->like('d.nama', $search);
+        $this->db->or_like('c.nama', $search);
+        $this->db->limit($perPage, $page);
+        if ($type == 'data') {
+            return $this->db->get()->result_array();
+        } elseif ($type == 'count') {
+            return $this->db->count_all_results();
+        }
+    }
+
+    public function getDataByIdAjaxRemote($id, $type)
+    {
+        if ($type == 'kecamatan') {
+            return $this->db->get_where('wilayah_desa', ['id' => $id])->row_array();
+        } elseif ($type == 'kabupaten') {
+            return $this->db->get_where('wilayah_kecamatan', ['id' => $id])->row_array();
+        } elseif ($type == 'provinsi') {
+            return $this->db->get_where('wilayah_kabupaten', ['id' => $id])->row_array();
+        }
+    }
+
+    public function getDataKategori($perPage, $page, $search, $type)
+    {
+        $this->db->select('*');
+        $this->db->from('m_kategori');
+        $this->db->like('nama_kategori', $search);
+        $this->db->limit($perPage, $page);
+
+        if ($type == 'data') {
+            return $this->db->get()->result_array();
+        } elseif ($type == 'count') {
+            return $this->db->count_all_results();
+        }
+    }
 }
